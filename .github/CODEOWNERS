@@ -1,0 +1,19 @@
+# Last matching pattern wins, so the catch-all goes first.
+
+# Default: developers and alumni own everything not listed below.
+*                           @Nucleo-Estudantes-Informatica-ISEP/developers @Nucleo-Estudantes-Informatica-ISEP/alumni
+
+# Architects own project rules, docs, CI/infra, license, build config and the database contract.
+/AGENTS.md                  @Nucleo-Estudantes-Informatica-ISEP/architects
+/LICENSE                    @Nucleo-Estudantes-Informatica-ISEP/architects
+/.agents/                   @Nucleo-Estudantes-Informatica-ISEP/architects
+/docs/                      @Nucleo-Estudantes-Informatica-ISEP/architects
+/.github/                   @Nucleo-Estudantes-Informatica-ISEP/architects
+/infra/                     @Nucleo-Estudantes-Informatica-ISEP/architects
+/apps/api/prisma/           @Nucleo-Estudantes-Informatica-ISEP/architects
+
+# Root dependency and build config (any package manager's lockfile).
+/package.json               @Nucleo-Estudantes-Informatica-ISEP/architects
+/*lock*                     @Nucleo-Estudantes-Informatica-ISEP/architects
+/pnpm-workspace.yaml        @Nucleo-Estudantes-Informatica-ISEP/architects
+/turbo.json                 @Nucleo-Estudantes-Informatica-ISEP/architects
