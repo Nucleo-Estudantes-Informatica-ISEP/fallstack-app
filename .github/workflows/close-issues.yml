@@ -3,9 +3,12 @@ name: Close issues
 # GitHub closes issues from "Closes #N" only when a pull request reaches the default
 # branch (main). Pull requests here target dev, so this workflow closes them on merge.
 #
-# It uses pull_request_target so it also works for pull requests from forks. It never
-# checks out or runs code from the pull request, and the pull request body is read as
-# data only.
+# It uses pull_request_target so it also works for pull requests from forks. It checks
+# out only this repository's base branch, never code from the pull request, and the pull
+# request body is read as data only.
+#
+# Only a line that holds just a closing keyword and issue numbers counts, for example
+# "Closes #4". See .github/scripts/closing-issues.js.
 on:
   pull_request_target:
     types: [closed]
@@ -21,16 +24,20 @@ jobs:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
+      # For pull_request_target this is the base branch, not the pull request.
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
       - uses: actions/github-script@v9
         with:
           script: |
             const pr = context.payload.pull_request;
 
-            // Same keywords GitHub uses. "Refs #N" is not one of them, so it stays open.
-            const keyword = /\b(?:close[sd]?|fix(?:e[sd])?|resolve[sd]?)\b:?[ \t]+#(\d+)\b/gi;
-            const numbers = new Set(
-              [...(pr.body ?? "").matchAll(keyword)].map((match) => Number(match[1])),
+            const { parseClosingIssues } = require(
+              `${process.env.GITHUB_WORKSPACE}/.github/scripts/closing-issues.js`,
             );
+            const numbers = parseClosingIssues(pr.body);
 
             for (const number of numbers) {
               if (number === pr.number) continue;
