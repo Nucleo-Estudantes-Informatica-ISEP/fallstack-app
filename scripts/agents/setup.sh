@@ -3,7 +3,7 @@
 # .agents/ directory. Nothing created here is committed: every path is listed
 # in .git/info/exclude. Safe to re-run.
 #
-# On Windows, run it from Git Bash or WSL, or use scripts/agents/setup.ps1.
+# On Windows, run it from Git Bash or WSL: bash scripts/agents/setup.sh <agent>...
 set -euo pipefail
 
 usage() {
