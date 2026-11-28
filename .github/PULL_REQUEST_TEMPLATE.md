@@ -1,10 +1,10 @@
-## Description
-
-<!-- What does this change and why? -->
-
 ## Related issue
 
 Closes #
+
+## Description
+
+<!-- What does this change and why? -->
 
 ## How to test
 
