@@ -12,7 +12,7 @@ Short operational index for contributors and agents. Follow the linked documents
 
 Run `scripts/agents/setup.sh <agent>...` once per clone, naming the agents you use: `claude`, `gemini`, `codex`, `cursor`, `copilot`, or `all`. It creates the tool-specific files for those agents (`CLAUDE.md` and `.claude/skills` for `claude`, `GEMINI.md` for `gemini`) and lists them in `.git/info/exclude`. Codex, Cursor and Copilot read `AGENTS.md` natively, so naming them creates nothing. It also copies the organisation guide to `.agents/org-contributing.md` when the GitHub CLI is authenticated, unless you pass `--no-guide`; otherwise it prints a warning and skips that step, and the rest of the setup still completes. Do not commit tool-specific files.
 
-On Windows, run the script from Git Bash (installed with Git for Windows) or WSL: `bash scripts/agents/setup.sh <agent>...`. Without symlink support, `.claude/skills` is a copy, so rerun the script after `.agents/skills` changes.
+On Windows, run `scripts\agents\setup.bat <agent>...` from Command Prompt or PowerShell. It needs Git Bash, which comes with Git for Windows. You can also run `bash scripts/agents/setup.sh <agent>...` from Git Bash or WSL. Without symlink support, `.claude/skills` is a copy, so rerun the script after `.agents/skills` changes.
 
 Use the Node version in `.nvmrc` and the pnpm version in `packageManager`, then run `pnpm install`.
 
