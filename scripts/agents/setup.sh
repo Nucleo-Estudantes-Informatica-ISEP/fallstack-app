@@ -9,7 +9,7 @@ set -euo pipefail
 
 usage() {
   cat <<'USAGE'
-Usage: scripts/agents/setup.sh [--no-guide] <agent>...
+Usage: scripts/agents/setup.sh [--no-guide] [--refresh-skills] <agent>...
 
 Agents:
   claude   create CLAUDE.md and .claude/skills
@@ -20,17 +20,21 @@ Agents:
   all      claude and gemini
 
 Options:
-  --no-guide  do not copy the organisation contributing guide
-  -h, --help  show this help
+  --no-guide        do not copy the organisation contributing guide
+  --refresh-skills  update a copied skills directory from .agents/skills
+                    (adds and overwrites files, never deletes local ones)
+  -h, --help        show this help
 USAGE
 }
 
 guide=1
+refresh=0
 agents=""
 for arg in "$@"; do
   case "$arg" in
     -h | --help) usage; exit 0 ;;
     --no-guide) guide=0 ;;
+    --refresh-skills) refresh=1 ;;
     all) agents="$agents claude gemini" ;;
     claude | gemini | codex | cursor | copilot) agents="$agents $arg" ;;
     *) echo "error: unknown argument '$arg'" >&2; usage >&2; exit 2 ;;
@@ -74,12 +78,15 @@ link_skills() {
     return
   fi
   if [ -e "$target" ]; then
-    if [ -f "$target/.copied-by-setup" ]; then
-      rm -rf "$target"
+    if [ -f "$target/.copied-by-setup" ] && [ "$refresh" -eq 1 ]; then
+      cp -R .agents/skills/. "$target/"
+      echo "updated $target from .agents/skills (local files kept)"
+    elif [ -f "$target/.copied-by-setup" ]; then
+      echo "kept    $target (copy: pass --refresh-skills to update it, local files are never deleted)"
     else
       echo "kept    $target (already exists)"
-      return
     fi
+    return
   fi
   mkdir -p "$(dirname "$target")"
   if ln -s "$link_to" "$target" 2>/dev/null && [ -L "$target" ]; then
@@ -88,7 +95,7 @@ link_skills() {
     rm -rf "$target"
     cp -R .agents/skills "$target"
     touch "$target/.copied-by-setup"
-    echo "created $target (copy, symlinks unavailable: re-run setup after .agents/skills changes)"
+    echo "created $target (copy, symlinks unavailable: re-run with --refresh-skills after .agents/skills changes)"
   fi
   hide "/$target"
 }
