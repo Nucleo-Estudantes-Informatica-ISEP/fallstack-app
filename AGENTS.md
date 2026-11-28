@@ -6,11 +6,11 @@ Short operational index for contributors and agents. Follow the linked documents
 
 - [README](README.md): what the project is and how to run it.
 - [CONTRIBUTING](CONTRIBUTING.md): the dev/main branch workflow.
-- Organisation guide: commit, branch, pull request, issue and agent rules. After `scripts/agents/setup.sh`, read the local copy in `.agents/org-contributing.md` instead of fetching it. When a rule here conflicts with the organisation guide, this file wins.
+- [Organisation guide](https://github.com/Nucleo-Estudantes-Informatica-ISEP/.github/blob/main/CONTRIBUTING.md): commit, branch, pull request, issue and agent rules. If `.agents/org-contributing.md` exists, read that local copy instead of fetching the guide. If it is missing, open the guide at the link above, or run `gh auth login` and rerun `scripts/agents/setup.sh` to create it. When a rule here conflicts with the organisation guide, this file wins.
 
 ## Setup
 
-Run `scripts/agents/setup.sh` once per clone. It creates the tool-specific files (for example `CLAUDE.md`) and the local organisation guide, and lists them in `.git/info/exclude`. Do not commit tool-specific files.
+Run `scripts/agents/setup.sh` once per clone. It creates the tool-specific files (for example `CLAUDE.md`) and lists them in `.git/info/exclude`. It also copies the organisation guide to `.agents/org-contributing.md` when the GitHub CLI is authenticated; otherwise it prints a warning and skips that step, and the rest of the setup still completes. Do not commit tool-specific files.
 
 Use the Node version in `.nvmrc` and the pnpm version in `packageManager`, then run `pnpm install`.
 
