@@ -15,5 +15,5 @@ This repository uses the **dev/main** model.
 ## Closing issues
 
 - Link the issue in the pull request with `Closes #N`, or `Refs #N` if the pull request only partly resolves it.
-- An issue is done when its pull request merges into `dev`.
-- GitHub closes issues automatically only when a change reaches the default branch (`main`). Until that is automated, close the issue by hand when the pull request merges into `dev`.
+- An issue is done when its pull request merges into `dev`. The `Close issues` workflow then closes every issue named with `Closes`, `Fixes` or `Resolves`, and comments on it with a link to the pull request. `Refs` leaves the issue open.
+- GitHub closes issues from keywords on its own only when a change reaches the default branch (`main`), which is why the workflow exists. GitHub also does not fill the Development link for pull requests into `dev`. Add it by hand if you need it.
