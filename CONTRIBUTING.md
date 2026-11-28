@@ -1,8 +1,6 @@
 # Contributing
 
-This repository follows the organisation's
-[contributing guide](https://github.com/Nucleo-Estudantes-Informatica-ISEP/.github/blob/main/CONTRIBUTING.md)
-for commits, branches, pull requests, issues, reviews and agent rules.
+This repository follows the organisation's [contributing guide](https://github.com/Nucleo-Estudantes-Informatica-ISEP/.github/blob/main/CONTRIBUTING.md) for commits, branches, pull requests, issues, reviews and agent rules.
 This file only records what is specific to this repository.
 
 ## Branch workflow
@@ -18,5 +16,4 @@ This repository uses the **dev/main** model.
 
 - Link the issue in the pull request with `Closes #N`, or `Refs #N` if the pull request only partly resolves it.
 - An issue is done when its pull request merges into `dev`.
-- GitHub closes issues automatically only when a change reaches the default branch (`main`).
-  Until that is automated, close the issue by hand when the pull request merges into `dev`.
+- GitHub closes issues automatically only when a change reaches the default branch (`main`). Until that is automated, close the issue by hand when the pull request merges into `dev`.
