@@ -14,7 +14,6 @@ on:
 permissions:
   contents: read
   issues: write
-  pull-requests: read
 
 jobs:
   close:
@@ -56,11 +55,6 @@ jobs:
                 continue;
               }
 
-              await github.rest.issues.createComment({
-                ...context.repo,
-                issue_number: number,
-                body: `Closed by #${pr.number}, merged into \`${pr.base.ref}\`.`,
-              });
               await github.rest.issues.update({
                 ...context.repo,
                 issue_number: number,
