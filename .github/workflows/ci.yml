@@ -1,0 +1,48 @@
+name: CI
+
+# Required status check for branch protection: "Test, typecheck, lint & build".
+on:
+  pull_request:
+    branches: [dev, main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    name: Test, typecheck, lint & build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          # Turborepo needs history to find the workspaces a pull request affects.
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      # Biome checks the whole repository (it takes milliseconds).
+      - run: pnpm exec biome ci .
+
+      # On pull requests, workspace tasks run only for affected workspaces and their dependents.
+      - name: Lint, typecheck, test and build (affected)
+        if: github.event_name == 'pull_request'
+        env:
+          TURBO_SCM_BASE: origin/${{ github.base_ref }}
+        run: pnpm exec turbo run lint typecheck test build --affected
+
+      # Manual runs check every workspace.
+      - name: Lint, typecheck, test and build (all)
+        if: github.event_name != 'pull_request'
+        run: pnpm exec turbo run lint typecheck test build
