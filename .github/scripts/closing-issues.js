@@ -13,7 +13,25 @@ const DIRECTIVE = new RegExp(
   `^ {0,3}(?:[-*+]\\s+)?${KEYWORD}:?\\s+(${REFERENCES})\\s*\\.?\\s*$`,
   "i",
 );
-const FENCE = /^ {0,3}(`{3,}|~{3,})/;
+const OPEN_FENCE = /^ {0,3}(`{3,}|~{3,})(.*)$/;
+const CLOSE_FENCE = /^ {0,3}(`{3,}|~{3,})[ \t]*$/;
+
+// Returns the marker when the line opens a fenced code block.
+function openingFence(line) {
+  const match = line.match(OPEN_FENCE);
+  if (!match) return null;
+  const [, marker, info] = match;
+  // The info string of a backtick fence cannot contain a backtick.
+  if (marker[0] === "`" && info.includes("`")) return null;
+  return marker;
+}
+
+// A closing fence uses the same character, is at least as long as the opening one,
+// and may be followed only by spaces or tabs.
+function closesFence(line, fence) {
+  const marker = line.match(CLOSE_FENCE)?.[1];
+  return marker !== undefined && marker[0] === fence[0] && marker.length >= fence.length;
+}
 
 function parseClosingIssues(body) {
   const text = (body ?? "").replace(/\r\n?/g, "\n").replace(/<!--[\s\S]*?-->/g, "");
@@ -21,14 +39,14 @@ function parseClosingIssues(body) {
   let fence = null;
 
   for (const line of text.split("\n")) {
-    const marker = line.match(FENCE)?.[1];
-
     if (fence) {
-      if (marker && marker[0] === fence[0] && marker.length >= fence.length) fence = null;
+      if (closesFence(line, fence)) fence = null;
       continue;
     }
-    if (marker) {
-      fence = marker;
+
+    const opened = openingFence(line);
+    if (opened) {
+      fence = opened;
       continue;
     }
 

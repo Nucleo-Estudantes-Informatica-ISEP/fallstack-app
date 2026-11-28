@@ -74,6 +74,25 @@ test("ignores fenced code blocks", () => {
   assert.deepEqual(parse("```\nCloses #13"), []);
 });
 
+test("keeps a fence open until a closing marker with nothing after it", () => {
+  assert.deepEqual(parse("~~~text\n~~~ example\nCloses #42\n~~~"), []);
+  assert.deepEqual(parse("```\n``` text\nCloses #42\n```"), []);
+  assert.deepEqual(parse("```\n```js\nCloses #42\n```"), []);
+  assert.deepEqual(parse("~~~\n```\nCloses #42\n```\n~~~"), []);
+  assert.deepEqual(parse("````\nCloses #1\n```\nCloses #2\n````"), []);
+});
+
+test("closes a fence at a marker followed only by spaces or tabs", () => {
+  assert.deepEqual(parse("```\nCloses #1\n```  \nCloses #2"), [2]);
+  assert.deepEqual(parse("~~~\nCloses #1\n~~~\t\nCloses #2"), [2]);
+  assert.deepEqual(parse("```\nCloses #1\n`````\nCloses #2"), [2]);
+});
+
+test("does not treat a backtick line with a backtick in the info string as a fence", () => {
+  assert.deepEqual(parse("```js`\nCloses #5"), [5]);
+  assert.deepEqual(parse("~~~js`\nCloses #5\n~~~"), []);
+});
+
 test("ignores HTML comments", () => {
   assert.deepEqual(parse("<!-- Closes #16 -->"), []);
   assert.deepEqual(parse("<!--\nCloses #16\n-->\nCloses #17"), [17]);
