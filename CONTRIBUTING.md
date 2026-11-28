@@ -14,6 +14,6 @@ This repository uses the **dev/main** model.
 
 ## Closing issues
 
-- Link the issue in the pull request with `Closes #N`, or `Refs #N` if the pull request only partly resolves it.
-- An issue is done when its pull request merges into `dev`. The `Close issues` workflow then closes every issue named with `Closes`, `Fixes` or `Resolves`. `Refs` leaves the issue open.
+- Link the issue in the pull request with `Closes #N`, or `Refs #N` if the pull request only partly resolves it. Put `Closes #N` on a line of its own, as the template does.
+- An issue is done when its pull request merges into `dev`. The `Close issues` workflow then closes every issue named in a line that holds only `Closes`, `Fixes` or `Resolves` and issue numbers, such as `Closes #4` or `- Fixes #5, #6`. It ignores the same words inside a sentence, a quote, a code block or a comment, so `This does not close #4.` closes nothing. `Refs` leaves the issue open.
 - GitHub closes issues from keywords on its own only when a change reaches the default branch (`main`), which is why the workflow exists. GitHub also does not fill the Development link for pull requests into `dev`. Add it by hand if you need it.

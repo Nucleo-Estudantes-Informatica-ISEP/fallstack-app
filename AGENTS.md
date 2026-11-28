@@ -18,7 +18,7 @@ FallStack connects ISEP students with companies, internships and career opportun
 - Ask before destructive actions, major dependency upgrades, or changes to CI or deployment configuration.
 - Run the documented checks before review. Never report a check as passing unless you ran it, and never skip or loosen tests, lint rules or CI to get a green result.
 - Add or update a decision record in the same pull request when it settles a meaningful architecture or product decision.
-- Open pull requests with every section of the [template](.github/PULL_REQUEST_TEMPLATE.md) filled in, the applicable labels, and the author as assignee. Link the issue with `Closes #N`, or `Refs #N` for partial work. Say which of these you could not apply.
+- Open pull requests with every section of the [template](.github/PULL_REQUEST_TEMPLATE.md) filled in, the applicable labels, and the author as assignee. Link the issue with `Closes #N` on a line of its own, or `Refs #N` for partial work. Say which of these you could not apply.
 
 ## More detail
 
